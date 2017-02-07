@@ -22,19 +22,20 @@ public abstract class AbstractQuery {
 	protected String process() throws Exception {
 		this.response = this.query();
 		if (this.response.isFind()) {
-			return this.messageBuilder();
+			return this.builderMessage();
 		}
-		return this.noFindResponse();
+		return this.noFoundResponse();
 	}
 
 	/** 当查询到结果，需要将findFlag设置为true*/
 	protected abstract MsgResponseBean query() throws Exception;
 	
-	protected abstract String messageBuilder() throws Exception;
+	protected abstract String builderMessage() throws Exception;
 	
 	/** 配置未查询到数据的返回结果*/
-	protected abstract String noFindResponse() throws Exception;
+	protected abstract String noFoundResponse() throws Exception;
 	
-	
+	/** 关键字匹配，若符合则处理*/
+	protected abstract boolean matchKeyword(String keyword) throws Exception;
 	
 }

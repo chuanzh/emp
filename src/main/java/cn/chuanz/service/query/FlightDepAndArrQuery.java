@@ -2,10 +2,8 @@ package cn.chuanz.service.query;
 
 import cn.chuanz.bean.MsgResponseBean;
 import cn.chuanz.service.AbstractQuery;
-import cn.chuanz.util.Constant;
-import cn.chuanz.util.anotation.KeywordQuery;
+import cn.chuanz.util.FlightUtil;
 
-@KeywordQuery({Constant.FLIGHT_DEP_AND_ARR})
 public class FlightDepAndArrQuery extends AbstractQuery {
 
 	@Override
@@ -15,15 +13,21 @@ public class FlightDepAndArrQuery extends AbstractQuery {
 	}
 
 	@Override
-	protected String messageBuilder() throws Exception {
+	protected String builderMessage() throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	protected String noFindResponse() throws Exception {
+	protected String noFoundResponse() throws Exception {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	protected boolean matchKeyword(String keyword) throws Exception {
+		// TODO Auto-generated method stub
+		return FlightUtil.isDepAndArr(keyword);
 	}
 
 }

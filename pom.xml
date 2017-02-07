@@ -94,6 +94,12 @@
 		<artifactId>jsoup</artifactId>
 		<version>1.8.3</version>
 	</dependency>
+	
+	<dependency>
+		<groupId>com.github.chuanzh</groupId>
+		<artifactId>eweb</artifactId>
+		<version>1.0.1</version>
+	</dependency>
     
   </dependencies>
 </project>

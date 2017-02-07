@@ -21,13 +21,13 @@ public class HttpDispatcher extends HttpFilter {
 	@Override
 	public String controlFolder() {
 		// TODO Auto-generated method stub
-		return "com.huoli.control";
+		return "cn.chuanz.control";
 	}
 
 	@Override
 	protected String alias() {
 		// TODO Auto-generated method stub
-		return "/mpqq";
+		return "/emp";
 	}
 
 	@Override

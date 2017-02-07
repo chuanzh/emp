@@ -1,18 +1,10 @@
 package cn.chuanz.util;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-
-import com.github.chuanzh.orm.DbBasicService;
-import com.github.chuanzh.orm.DbFactory;
-import com.github.chuanzh.util.FuncStatic;
-
-import freemarker.template.utility.DateUtil;
 
 public class FlightUtil {
 	
