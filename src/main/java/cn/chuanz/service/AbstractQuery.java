@@ -19,21 +19,19 @@ public abstract class AbstractQuery {
 		}
 	}
 	
-	protected String process() throws Exception {
+	protected Object process() throws Exception {
 		this.response = this.query();
 		if (this.response.isFind()) {
-			return this.builderMessage();
+			return this.response;
 		}
 		return this.noFoundResponse();
 	}
 
 	/** 当查询到结果，需要将findFlag设置为true*/
 	protected abstract MsgResponseBean query() throws Exception;
-	
-	protected abstract String builderMessage() throws Exception;
-	
+		
 	/** 配置未查询到数据的返回结果*/
-	protected abstract String noFoundResponse() throws Exception;
+	protected abstract Object noFoundResponse() throws Exception;
 	
 	/** 关键字匹配，若符合则处理*/
 	protected abstract boolean matchKeyword(String keyword) throws Exception;

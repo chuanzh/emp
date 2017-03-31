@@ -13,4 +13,6 @@ public @interface KeywordQuery {
 
 	int[] value();
 	
+	int weight(); //权重,权重越小优先判断关键字是否符合条件
+	
 }

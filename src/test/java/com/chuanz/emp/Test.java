@@ -1,12 +1,12 @@
 package com.chuanz.emp;
 
-import cn.chuanz.util.MPUtil;
+import cn.chuanz.util.MPApi;
 
 public class Test {
 	
 	
 	public static void main(String[] args) {
-		System.out.println(MPUtil.init().token());
+		System.out.println(MPApi.init().token());
 	}
 
 }

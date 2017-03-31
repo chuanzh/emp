@@ -6,6 +6,13 @@ import cn.chuanz.bean.MessageItem;
 import cn.chuanz.bean.MsgResponseBean;
 
 public class MsgBuilder {
+	
+	public static String createMsg(MsgResponseBean response) {
+		if (response.getArticles() != null) {
+			return createTextMsg(response);
+		}
+		return createTextPicMsg(response);
+	}
 
 	/**
 	 * 创建文本回复信息

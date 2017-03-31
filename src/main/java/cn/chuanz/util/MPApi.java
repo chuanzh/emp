@@ -4,26 +4,26 @@ import org.apache.commons.codec.digest.DigestUtils;
 
 import cn.chuanz.bean.TemplateBean;
 
-public abstract class MPUtil {
+public abstract class MPApi {
 	
-	private static MPUtil mpUtil = null; 
+	private static MPApi mpApi = null; 
 	
-	protected MPUtil() {};
+	protected MPApi() {};
 	
-	public static MPUtil init () {
-		if (mpUtil == null) {
+	public static MPApi init () {
+		if (mpApi == null) {
 			if ("qq".equals(ConfigRead.readValue("mp_flag"))) {
-				mpUtil = new QQUtil();
+				mpApi = new QQApi();
 			} else {
-				mpUtil = new WeiXinUtil();
+				mpApi = new WeiXinApi();
 			}
 			
 		}
-		return mpUtil;
+		return mpApi;
 	}
 	
 	public static void main(String[] args) {
-		System.out.println(MPUtil.init().token());
+		System.out.println(MPApi.init().token());
 	}
 	
 	

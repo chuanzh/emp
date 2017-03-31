@@ -10,9 +10,9 @@ import com.github.chuanzh.util.FuncStatic;
 import cn.chuanz.bean.TemplateBean;
 import net.sf.json.JSONObject;
 
-public class QQUtil extends MPUtil {
+public class QQApi extends MPApi {
 	
-	private static Logger logger = Logger.getLogger(MPUtil.class);
+	private static Logger logger = Logger.getLogger(MPApi.class);
 
 	private static String TOKEN_URL = "https://api.mp.qq.com/cgi-bin/token?appid=%s&secret=%s";
 	/**

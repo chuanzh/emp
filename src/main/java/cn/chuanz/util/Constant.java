@@ -8,6 +8,9 @@ public class Constant {
 	public static String EVENT = "event";
 	public static String SUBSCRIBE = "subscribe";
 	public static String UNSUBSCRIBE = "unsubscribe";
+	public static String TEMPLATESENDJOBFINISH = "TEMPLATESENDJOBFINISH";
+	public static String TEMPLATEFANMSGREAD = "TEMPLATEFANMSGREAD";
+	public static String SUCCESS = "success";
 	
 	/** 航班号*/
 	public static final int FLIGHT_NUMBER = 1;

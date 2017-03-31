@@ -2,7 +2,7 @@ package cn.chuanz.util;
 
 import cn.chuanz.bean.TemplateBean;
 
-public class WeiXinUtil extends MPUtil {
+public class WeiXinApi extends MPApi {
 
 	@Override
 	public String token() {

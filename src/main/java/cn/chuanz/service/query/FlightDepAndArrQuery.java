@@ -13,13 +13,7 @@ public class FlightDepAndArrQuery extends AbstractQuery {
 	}
 
 	@Override
-	protected String builderMessage() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	protected String noFoundResponse() throws Exception {
+	protected MsgResponseBean noFoundResponse() throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
