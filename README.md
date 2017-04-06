@@ -31,12 +31,26 @@ keyword_query_package=com.chuanz.service.query
 ```
 
 # 使用说明
-emp框架已经帮你实现了基本的业务分发逻辑，所以在增加一个事件处理类的时候，你只需要在keyword_query_package添加一个类即可，
-比如：需要增加一个航班号查询的类，FlightNumberQuery,只需要继承AbstractQuery类，实现下面3个方法。
-matchKeyword()：用来匹配你的关键字
-query()：处理你的业务逻辑，比如查询数据等，若查询到结果将FindFlag设置为true
-noFoundResponse()：若没有查询到符合要求的，返回的结果
+## 关键字查询类使用
+  + 方法实现  
+   emp框架已经帮你实现了基本的业务分发逻辑，所以在增加一个事件处理类的时候，你只需要在keyword_query_package添加一个类即可，
+   比如：需要增加一个航班号查询的类，FlightNumberQuery,只需要继承AbstractQuery类，实现下面3个方法。  
+     + matchKeyword()：用来匹配你的关键字  
+     + query()：处理你的业务逻辑，比如查询数据等，若查询到结果将FindFlag设置为true    
+     + noFoundResponse()：若没有查询到符合要求的，返回的结果    
+  + 注解使用  
+    可以使用@KeywordQuery来配置查询类的权重及value值，权重weight越小，就越会靠前去匹配用户输入的关键字，
+    比如：weight=0表示用户输入关键字后，首先会使用FlightNumberQuery类matchKeyword来匹配关键字，这里开发者可以根据自己业务的需求自行配置权重
+    value为附加参数，可以不填，当然也可以不使用@KeywordQuery注解，默认是排到末尾。    
+  + 请求对象  
+    公众号请求格式分很多种，如：text类型，image类型，video,voice类型，location类型，Event事件类型  
+    我这里统一封装到对象MsgRequestBean对象里面了，你可以查看MsgRequestBean，获取不同类型的参数。  
+  + 响应对象  
+    公众号的返回格式一般为存文本格式，或者图文格式（单图文或多图文）  
+    返回的数据则需要封装到MsgResponseBean对象里面，若为存文本，只需要设置content内容即可，若为图文，则需要设置articles参数。
+    articles为List<MessageItem>集合，对于图文可以设置picUrl(图片地址)，url(链接调整地址)，title(标题)，description(描述)
 ```Java
+@KeywordQuery(weight=0,value={Constant.FLIGHT_NUMBER,Constant.FLIGHT_DATE_AND_NUMBER})
 public class FlightNumberQuery extends AbstractQuery {
 	
 	private String flightNo;
@@ -76,13 +90,18 @@ public class FlightNumberQuery extends AbstractQuery {
 
 
 }
-```
+```  
+    
+    
 公众号API调用，可使用MPApi.init().xxx()来获取相应api数据，下面列举了所有的方法及用途
 ```Java
 MPApi.init().token() 获取公众号token
 MPApi.init().jsapi_ticket() 根据token获取访问的ticket
-MPApi.init().getOpenIdByCode() 根据微信返回的coke获取用户的openId
-sendMessage() 根据模板像用户推送消息
+MPApi.init().getOpenIdByCode(String openId) 根据微信返回的coke获取用户的openId
+MPApi.init().sendMessage(TemplateBean template) 根据模板像用户推送消息
 ```
 
+# 信息
+## 页面数据分享
+在给用户返回的消息，有时是网页链接的形式，用户要点击进入后，可以将相关的动态信息分享给其它人
 
