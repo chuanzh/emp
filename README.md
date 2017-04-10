@@ -13,8 +13,7 @@
     </dependency>
 ```
 公众号配置（cfg.properties）  
-1）使用缓存了从公众号获取的token，每次从公众号服务器获取token后，使用有效期为7200秒，所以你不必要每次使用都去调用公众号的接口（他们也推荐这样做），
-所以通过保存到缓存中后，下次就可以使用“MP_TOKEN”来获取token了，需要先配置Redis缓存服务。  
+1）mpqq_token用来配置token保存在缓存中的key,公众号推荐将从他们服务器上获取的token保存到自己的服务器上，这样不会因为频繁访问而遭到限制，也大大提供了访问速度，公众号的token使用有效期为7200s，mpqq中配置的是6000s，需要先配置Redis缓存服务。  
 2）mp_flag参数用来配置是qq公众号还是微信公众号  
 3）keyword_query_package：你的关键字查询类的目录  
 ```xml
@@ -134,7 +133,68 @@ MPApi.init().getOpenIdByCode(String openId) 根据微信返回的coke获取用�
 MPApi.init().sendMessage(TemplateBean template) 根据模板像用户推送消息
 ```
 
-# 信息
-## 页面数据分享
-在给用户返回的消息，有时是网页链接的形式，用户要点击进入后，可以将相关的动态信息分享给其它人
 
+## 页面数据分享
+用户在打开公众号中的链接网页后，可以分享给其他人，如果不配置，公众号默认是使用网页中的第一行文字作为分享，但是我们也可以自定义分享，如：分享的标题，分享的图片，分享的描述，引入对应的分享JS代码，以QQ为例，需要引入：
+```Javascript  
+	<!-- QQ分享 -->
+	<script type="text/javascript" src="https://mp.gtimg.cn/open/js/openApi.js"></script>
+	<script type="text/javascript" src="${host}/js/mqq.js"></script>
+	<!-- QQ分享 -->
+```  
+
+mqq.js会调用auth类signUrl方法，获取签名的参数，返回appId，timestamp,nonceStr,signature。jsApiList表示分享的权限，比如qq群，qq用户，qq空间，微信群，微信用户等。  
+注意：fenxiang_title，fenxiang_desc，fenxiang_link，fenxiang_img是后端传过来的，可以参考dynamic类里面的逻辑。
+```Javascript  
+	$.ajax({
+        url: "/auth.e?method=signUrl",
+        async: true,
+        dataType: 'json',
+        success: function (data) {
+        	if (data.code == "1") {
+        		mqq.config({
+        		    debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+        		    appId: data.appId, // 必填，公众号的唯一标识
+        		    timestamp: data.timestamp, // 必填，生成签名的时间戳
+        		    nonceStr: data.nonceStr, // 必填，生成签名的随机串
+        		    signature: data.signature,// 必填，签名，见附录1
+        		    jsApiList: ['onMenuShareQQ','onMenuShareAppMessage','onMenuShareTimeline','onMenuShareQzone'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+        		});
+        	}
+        }
+	});
+		
+		
+		mqq.ready(function(){
+		    // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
+			var t = $("#fenxiang_title").html();
+		    var d = $("#fenxiang_desc").html();
+		    var l = htmlDecode($("#fenxiang_link").html());
+		    var u = $("#fenxiang_img").html();
+		    
+		    mqq.onMenuShareQQ({
+			    title: t, // 分享标题
+			    desc: d, // 分享描述
+			    link: l, // 分享链接
+			    imgUrl: u, // 分享图标
+			    success: function () { 
+			       // 用户确认分享后执行的回调函数
+			    },
+			    cancel: function () { 
+			       // 用户取消分享后执行的回调函数
+			    }
+			});
+		}
+```
+
+## 消息推送
+有时我们需要主动将消息推送给用户，推送消息调用MPApi.init().sendMessage(template)方法  
+  + TemplateBean类说明  
+    + tousername: 推送用户openId  
+    + templateid: 模板ID，这需要在公众后台申请，申请通过后会展示出来  
+    + data: HashMap<String,String> 推送的参数，根据模板中的配置一一对应  
+    + url: 推送消息的跳转地址  
+ 发送消息可参考MsgPush类的dynamic方法
+ 
+ ## 用户授权
+ 
