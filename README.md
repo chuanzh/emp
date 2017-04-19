@@ -80,9 +80,9 @@ public class FlightNumberQuery extends AbstractQuery {
 	}
 
 	@Override
-	protected boolean matchKeyword(String keyword) throws Exception {
+	protected boolean match() throws Exception {
 		// TODO Auto-generated method stub
-		if( FlightUtil.isFlightNumber(keyword) || FlightUtil.isFlightDateAndNumber(keyword))
+		if( FlightUtil.isFlightNumber(request.getContent()) || FlightUtil.isFlightDateAndNumber(request.getContent()))
 			return true;
 		
 		return false;
@@ -117,7 +117,7 @@ public class SubscribeEventQuery extends AbstractQuery {
 	}
 
 	@Override
-	protected boolean matchKeyword(String keyword) throws Exception {
+	protected boolean match() throws Exception {
 		// TODO Auto-generated method stub
 		return Constant.EVENT.equals(request.getMsgType()) && Constant.SUBSCRIBE.equals(request.getEvent());
 	}
