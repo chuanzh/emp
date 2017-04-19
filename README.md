@@ -34,10 +34,10 @@ keyword_query_package=com.chuanz.service.query
 
   + 方法实现  
    emp框架已经帮你实现了基本的业务分发逻辑，所以在增加一个事件处理类的时候，你只需要在keyword_query_package添加一个类即可，
-   比如：需要增加一个航班号查询的类，FlightNumberQuery,只需要继承AbstractQuery类，实现下面3个方法。  
-     + match()：用来匹配你的查询规则  
-     + query()：处理你的业务逻辑，比如查询数据等，若查询到结果将FindFlag设置为true    
-     + noFoundResponse()：若没有查询到符合要求的，返回的结果    
+   比如：需要增加一个航班号查询的类，FlightNumberQuery,只需要继承AbstractQuery类，实现下面3个方法。    
+    + match()：用来匹配你的查询规则  
+    + query()：处理你的业务逻辑，比如查询数据等，若查询到结果将FindFlag设置为true    
+    + noFoundResponse()：若没有查询到符合要求的，返回的结果    
   + 注解使用  
     可以使用@KeywordQuery来配置查询类的权重及value值，权重weight越小，就越会靠前去匹配用户输入的关键字，
     比如：weight=0表示用户输入关键字后，首先会使用FlightNumberQuery类matchKeyword来匹配关键字，这里开发者可以根据自己业务的需求自行配置权重
