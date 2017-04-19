@@ -35,13 +35,13 @@ keyword_query_package=com.chuanz.service.query
   + 方法实现  
    emp框架已经帮你实现了基本的业务分发逻辑，所以在增加一个事件处理类的时候，你只需要在keyword_query_package添加一个类即可，
    比如：需要增加一个航班号查询的类，FlightNumberQuery,只需要继承AbstractQuery类，实现下面3个方法。  
-     + matchKeyword()：用来匹配你的关键字  
-     + query()：处理你的业务逻辑，比如查询数据等，若查询到结果将FindFlag设置为true    
+     + match()：用来匹配你的查询规则  
+     + query()：处理你的业务逻辑，比如查询数据等，若查询到结果将FindFlag设置为true    
      + noFoundResponse()：若没有查询到符合要求的，返回的结果    
   + 注解使用  
     可以使用@KeywordQuery来配置查询类的权重及value值，权重weight越小，就越会靠前去匹配用户输入的关键字，
     比如：weight=0表示用户输入关键字后，首先会使用FlightNumberQuery类matchKeyword来匹配关键字，这里开发者可以根据自己业务的需求自行配置权重
-    value为附加参数，可以不填，当然也可以不使用@KeywordQuery注解，默认是排到末尾.  
+    value为附加参数，选填参数，disable参数，默认为false,设置为true表示禁用此查询类。当然也可以不使用@KeywordQuery注解，默认是排到末尾.  
   + 请求对象  
     公众号请求格式分很多种，如：text类型，image类型，video,voice类型，location类型，Event事件类型  
     我这里统一封装到对象MsgRequestBean对象里面了，你可以查看MsgRequestBean，获取不同类型的参数。  
@@ -187,14 +187,35 @@ mqq.js会调用auth类signUrl方法，获取签名的参数，返回appId，time
 		}
 ```
 
-## 消息推送
+## 消息推送  
 有时我们需要主动将消息推送给用户，推送消息调用MPApi.init().sendMessage(template)方法  
   + TemplateBean类说明  
-    + tousername: 推送用户openId  
-    + templateid: 模板ID，这需要在公众后台申请，申请通过后会展示出来  
-    + data: HashMap<String,String> 推送的参数，根据模板中的配置一一对应  
-    + url: 推送消息的跳转地址  
+     + tousername: 推送用户openId  
+     + templateid: 模板ID，这需要在公众后台申请，申请通过后会展示出来  
+     + data: HashMap<String,String> 推送的参数，根据模板中的配置一一对应  
+     + url: 推送消息的跳转地址  
  发送消息可参考MsgPush类的dynamic方法
  
- ## 用户授权
+ ## 第三方授权  
+ 公众号可以授权第三方页面获取用户信息   
+  + 获取信息步骤：  
+     + 第一步：根据微信授权地址获取code  
+     + 第二步：根据code获取用户信息，生成访问key  
+     + 第三步：根据key获取用户信息  
+  + 授权方式  
+     + 静默授权：以snsapi_base为scope发起的网页授权，是用来获取进入页面的用户的openid的，并且是静默授权并自动跳转到回调页的。用户感知的就是直接进入了回调页（往往是业务页面）  
+     + 手动授权：以snsapi_userinfo为scope发起的网页授权，是用来获取用户的基本信息的。但这种授权需要用户手动同意，并且由于用户同意过，所以无须关注，就可在授权后获取该用户的基本信息。  
+     + 关注公众号后都是静默授权  
+  + 访问安全  
+     + 通过第二步将用户信息以 key=>userinfo保存在redis中  
+     + 第三步通过IP限制，防止恶意IP访问  
+  获取用户信息时序图
+   ![image](https://raw.githubusercontent.com/chuanzh/emp/master/doc/images/公众号授权第三方获取用户信息.png)   
+ 
+  ## WEB页面反抓取
+  + IP限制
+  + 输入验证码：当达到一定频率，弹出验证码，正确才能继续  
+  + 只允许在公众号客户端中才能访问，必须通过授权跳转，如下，在需要访问的地址前加上授权地址  
+     https://open.weixin.qq.com/connect/oauth2/authorize?appid=APPID&redirect_uri=REDIRECT_URI&response_type=code&scope=SCOPE&state=STATE#wechat_redirect
+
  
