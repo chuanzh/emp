@@ -141,15 +141,21 @@ MPApi.init().sendMessage(TemplateBean template) 根据模板像用户推送消�
 	<script type="text/javascript" src="https://mp.gtimg.cn/open/js/openApi.js"></script>
 	<script type="text/javascript" src="${host}/js/mqq.js"></script>
 	<!-- QQ分享 -->
+	<!-- 微信分享 -->
+	<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+        <script type="text/javascript" src="${host}/js/mwx.js"></script>
+	<!-- 微信分享 -->
 ```  
 
 mqq.js会调用auth类signUrl方法，获取签名的参数，返回appId，timestamp,nonceStr,signature。jsApiList表示分享的权限，比如qq群，qq用户，qq空间，微信群，微信用户等。  
 注意：fenxiang_title，fenxiang_desc，fenxiang_link，fenxiang_img是后端传过来的，可以参考dynamic类里面的逻辑。
 ```Javascript  
 	$.ajax({
-        url: "/auth.e?method=signUrl",
-        async: true,
-        dataType: 'json',
+        url: "/emp/auth.e",
+	type: "POST",
+	data: {"method":"signUrl","url": window.location.href},
+	async: true,
+	dataType: 'json',
         success: function (data) {
         	if (data.code == "1") {
         		mqq.config({
