@@ -32,7 +32,7 @@ public class HttpDispatcher extends HttpFilter {
 
 	@Override
 	protected void initHtmlBuilder() {
-		FreemarkerBuilder.init("com.huoli.view", false, new String[]{"common/macro.ftl"});
+		FreemarkerBuilder.init("cn.chuanz.view", false, new String[]{"common/macro.ftl"});
 	}
 
 }

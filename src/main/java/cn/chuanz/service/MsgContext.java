@@ -19,6 +19,12 @@ public class MsgContext {
 	
 	private static Logger logger = Logger.getLogger(MsgContext.class);
 	private static List<Class> queryList = null;
+	
+	public static void main(String[] args) throws Exception {
+		String xml = "<xml><ToUserName><![CDATA[gh_5b867016dad2]]></ToUserName><FromUserName><![CDATA[oxYiaw6OYPKc1kAb7688JB6bsyJQ]]></FromUserName><CreateTime>1492055322</CreateTime><MsgType><![CDATA[event]]></MsgType><Event><![CDATA[subscribe]]></Event><EventKey><![CDATA[]]></EventKey></xml>";
+		String result = MsgContext.parseMsg(new MsgRequestBean(xml));
+		System.out.println(result);
+	}
 
 	public static String parseMsg(MsgRequestBean request) throws Exception {
 		MsgResponseBean response = null;
@@ -27,7 +33,8 @@ public class MsgContext {
 		if (Constant.EVENT.equals(request.getMsgType())) {
 			request.setContent(request.getEvent());
 		}
-		
+		logger.info("msgType: "+ request.getMsgType()+", event: "+request.getEvent());
+		System.out.println(Constant.EVENT.equals(request.getMsgType()) && Constant.SUBSCRIBE.equals(request.getEvent()));
 		AbstractQuery query = null;
 		for (Class c : queryList) {
 			Constructor cons = c.getConstructor(MsgRequestBean.class);

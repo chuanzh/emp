@@ -1,10 +1,15 @@
 package cn.chuanz.service.query;
 
+import cn.chuanz.bean.MsgRequestBean;
 import cn.chuanz.bean.MsgResponseBean;
 import cn.chuanz.service.AbstractQuery;
 import cn.chuanz.util.FlightUtil;
 
 public class FlightDepAndArrQuery extends AbstractQuery {
+	
+	public FlightDepAndArrQuery (MsgRequestBean request) {
+		super(request);
+	}
 
 	@Override
 	protected MsgResponseBean query() throws Exception {

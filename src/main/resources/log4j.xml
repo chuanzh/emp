@@ -23,7 +23,7 @@
 <!-- 输出到日志文件  -->  
     <appender name="filelog_appender"  
         class="org.apache.log4j.RollingFileAppender">  
-        <param name="File" value="/home/sdroptest/tomcat-paas/sdpaas/log/log.txt" />  
+        <param name="File" value="/home/zc/apache-tomcat-7.0.59/webapps/emp/log/log.txt" />  
         <param name="Append" value="true" />  
         <param name="MaxFileSize" value="200MB" />  
         <param name="MaxBackupIndex" value="10000" />  

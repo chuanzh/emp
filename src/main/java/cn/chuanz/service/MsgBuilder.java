@@ -9,9 +9,9 @@ public class MsgBuilder {
 	
 	public static String createMsg(MsgResponseBean response) {
 		if (response.getArticles() != null) {
-			return createTextMsg(response);
+			return createTextPicMsg(response);
 		}
-		return createTextPicMsg(response);
+		return createTextMsg(response);
 	}
 
 	/**

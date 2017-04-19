@@ -2,17 +2,20 @@ package cn.chuanz.util;
 
 import java.util.Random;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.log4j.Logger;
 
 import com.github.chuanzh.util.FuncHttp;
 import com.github.chuanzh.util.FuncStatic;
+import com.github.chuanzh.webframe.HtmlBuilder;
 
+import cn.chuanz.bean.MPSignBean;
 import cn.chuanz.bean.TemplateBean;
 import net.sf.json.JSONObject;
 
 public class QQApi extends MPApi {
 	
-	private static Logger logger = Logger.getLogger(MPApi.class);
+	private static Logger logger = Logger.getLogger(QQApi.class);
 
 	private static String TOKEN_URL = "https://api.mp.qq.com/cgi-bin/token?appid=%s&secret=%s";
 	/**
@@ -98,17 +101,25 @@ public class QQApi extends MPApi {
 	    return sb.toString();
 	  }
 	
-//	public static void setMpParams(HtmlBuilder htmlBuilder, String url) {
-//		int timestamp = (int)(System.currentTimeMillis()/1000);
-//		String token = MPUtil.token();
-//		String nonceStr = genRandomStr();
-//		String string1 = "jsapi_ticket="+MPUtil.jsapi_ticket(token)+"&noncestr="+nonceStr+"&timestamp="+timestamp+"&url="+url;
-//		String signature = DigestUtils.shaHex(string1);
-//		htmlBuilder.setValue("appId",ConfigRead.readValue("appid"));
-//		htmlBuilder.setValue("timestamp",timestamp);
-//		htmlBuilder.setValue("nonceStr",nonceStr);
-//		htmlBuilder.setValue("signature",signature);
-//	}
+	/**
+	 * 生成签名
+	 */
+	public MPSignBean signature(String... params) {
+		long timestamp = System.currentTimeMillis()/1000;
+		String token = token();
+		String nonceStr = genRandomStr();
+		String paramStr = "jsapi_ticket="+jsapi_ticket(token)+"&noncestr="+nonceStr+"&timestamp="+timestamp;
+		for (int index=0;index<params.length;index+=2) {
+			paramStr += "&"+params[index]+"="+params[index+1];
+		}
+		String signature = DigestUtils.shaHex(paramStr);
+		MPSignBean signBean = new MPSignBean();
+		signBean.setAppId(ConfigRead.readValue("appid"));
+		signBean.setNonceStr(nonceStr);
+		signBean.setTimestamp(timestamp);
+		signBean.setSignature(signature);
+		return signBean;
+	}
 	
 	public String getSnsapiBaseUrl(String redirectUri) {
 		return "https://open.mp.qq.com/connect/oauth2/authorize?appid="+ConfigRead.readValue("appid")+"&redirect_uri="+redirectUri+"&response_type=code&scope=snsapi_base&state=STATE#qq_redirect";

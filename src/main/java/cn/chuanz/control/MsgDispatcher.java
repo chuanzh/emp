@@ -10,6 +10,8 @@ import com.github.chuanzh.webframe.annotation.IjHttpServletRequest;
 
 import cn.chuanz.bean.MsgRequestBean;
 import cn.chuanz.service.MsgContext;
+import cn.chuanz.util.ConfigRead;
+import cn.chuanz.util.MPApi;
 
 /**
  * 消息调度器
@@ -44,11 +46,12 @@ public class MsgDispatcher {
 		}
 	}
 	
-	/** 初次授权使用*/
+//	/** 初次授权使用*/
 //	public String func() throws Exception {
 //		String echostr = request.getParameter("echostr");
-//		if (MPUtil.checksignautre(request.getParameter("signature"),request.getParameter("timestamp"),
-//				request.getParameter("nonce"),request.getParameter("token"))) 
+//		logger.info("echostr: "+request.getParameter("echostr")+",signature: "+request.getParameter("signature")+",timestamp: "+request.getParameter("timestamp")+",nonce: "+request.getParameter("nonce"));
+//		if (MPApi.checksignautre(request.getParameter("signature"),request.getParameter("timestamp"),
+//				request.getParameter("nonce"),ConfigRead.readValue("token"))) 
 //			return echostr;
 //		
 //		return "auth fail";

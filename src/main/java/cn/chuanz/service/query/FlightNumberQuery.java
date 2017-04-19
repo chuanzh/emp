@@ -2,15 +2,23 @@ package cn.chuanz.service.query;
 
 import com.github.chuanzh.util.FuncDate;
 
+import cn.chuanz.bean.MsgRequestBean;
 import cn.chuanz.bean.MsgResponseBean;
 import cn.chuanz.service.AbstractQuery;
 import cn.chuanz.service.MsgTemplate;
+import cn.chuanz.util.Constant;
 import cn.chuanz.util.FlightUtil;
-
+import cn.chuanz.util.anotation.KeywordQuery;
+@KeywordQuery(weight=0,value={Constant.FLIGHT_NUMBER,Constant.FLIGHT_DATE_AND_NUMBER})
 public class FlightNumberQuery extends AbstractQuery {
 	
 	private String flightNo;
 	private String flightDate;
+	
+	public FlightNumberQuery() {}
+	public FlightNumberQuery(MsgRequestBean request) {
+		super(request);
+	}
 
 	@Override
 	protected MsgResponseBean query() throws Exception {

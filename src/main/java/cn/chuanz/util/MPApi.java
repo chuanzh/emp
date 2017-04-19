@@ -1,7 +1,10 @@
 package cn.chuanz.util;
 
+import java.util.Arrays;
+
 import org.apache.commons.codec.digest.DigestUtils;
 
+import cn.chuanz.bean.MPSignBean;
 import cn.chuanz.bean.TemplateBean;
 
 public abstract class MPApi {
@@ -62,6 +65,14 @@ public abstract class MPApi {
 	
 	
 	/**
+	 * 根据字符串做签名
+	 * @param str
+	 * @return
+	 */
+	public abstract MPSignBean signature(String... params);
+	
+	
+	/**
 	 * 验证签名
 	 * @param signature
 	 * @param timestamp
@@ -70,7 +81,9 @@ public abstract class MPApi {
 	 * @return
 	 */
 	public static boolean checksignautre(String signature,String timestamp,String nonce,String token){
-	    String key = DigestUtils.shaHex(token + timestamp + nonce);
+		String[] str = { token, timestamp, nonce };
+        Arrays.sort(str); // 字典序排序
+	    String key = DigestUtils.shaHex(str[0] + str[1] + str[2]);
 		if (key.equalsIgnoreCase(signature)) {
 			return true;
 		}
