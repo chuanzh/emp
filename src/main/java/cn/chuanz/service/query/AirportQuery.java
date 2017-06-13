@@ -24,8 +24,8 @@ public class AirportQuery extends AbstractQuery {
 	}
 
 	@Override
-	protected boolean matchKeyword(String keyword) throws Exception {
-		return FlightUtil.isAirport(keyword);
+	protected boolean match() throws Exception {
+		return FlightUtil.isAirport(request.getContent());
 	}
 
 }

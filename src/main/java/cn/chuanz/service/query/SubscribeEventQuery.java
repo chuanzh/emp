@@ -32,7 +32,7 @@ public class SubscribeEventQuery extends AbstractQuery {
 	}
 
 	@Override
-	protected boolean matchKeyword(String keyword) throws Exception {
+	protected boolean match() throws Exception {
 		// TODO Auto-generated method stub
 		return Constant.EVENT.equals(request.getMsgType()) && Constant.SUBSCRIBE.equals(request.getEvent());
 	}

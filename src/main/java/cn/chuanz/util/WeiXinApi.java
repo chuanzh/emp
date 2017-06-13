@@ -24,18 +24,18 @@ public class WeiXinApi extends MPApi {
 	public String token() {
 		try {
 			String tokenKey = ConfigRead.readValue("mpqq_token");
-			String token = null;
-//			String token = RedisClient.get(tokenKey);
-//			if (token != null) {
-//				return token;
-//			}
+			//String token = null;
+			String token = RedisClient.get(tokenKey);
+			if (token != null) {
+				return token;
+			}
 			String url = String.format(TOKEN_URL,ConfigRead.readValue("appid"),ConfigRead.readValue("appsecret"));
 			String result =  FuncHttp.httpsGet(url);
 			JSONObject jo = JSONObject.fromObject(result);
 			token = jo.getString("access_token");
 			logger.info("token: "+token);
-//			RedisClient.set(tokenKey, token);
-//			RedisClient.expire(tokenKey, 7000);
+			RedisClient.set(tokenKey, token);
+			RedisClient.expire(tokenKey, 7000);
 			return token;
 		} catch (Exception e) {
 			logger.error(FuncStatic.errorTrace(e));
@@ -71,13 +71,26 @@ public class WeiXinApi extends MPApi {
 
 	@Override
 	public String getSnsapiBaseUrl(String redirectUri) {
-		// TODO Auto-generated method stub
-		return null;
+		return "https://open.weixin.qq.com/connect/oauth2/authorize?appid="+ConfigRead.readValue("appid")+"&redirect_uri="+redirectUri+"&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect";
 	}
 
+	private static String GET_OPEN_ID_BY_CODE_URL = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=%s&secret=%s&code=%s&grant_type=authorization_code";
+	/**
+	 * 根据CODE获取openId
+	 * @param code
+	 * @return
+	 */
 	@Override
 	public String getOpenIdByCode(String code) {
 		// TODO Auto-generated method stub
+		try {
+			String result = FuncHttp.httpGet(String.format(GET_OPEN_ID_BY_CODE_URL, ConfigRead.readValue("appid"),ConfigRead.readValue("appsecret"),code));
+			if (result != null) {
+				return JSONObject.fromObject(result).getString("openid");
+			}
+		} catch (Exception e) {
+			logger.error(FuncStatic.errorTrace(e));
+		}
 		return null;
 	}
 

@@ -34,6 +34,6 @@ public abstract class AbstractQuery {
 	protected abstract Object noFoundResponse() throws Exception;
 	
 	/** 关键字匹配，若符合则处理*/
-	protected abstract boolean matchKeyword(String keyword) throws Exception;
+	protected abstract boolean match() throws Exception;
 	
 }

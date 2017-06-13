@@ -29,17 +29,11 @@ public class MsgContext {
 	public static String parseMsg(MsgRequestBean request) throws Exception {
 		MsgResponseBean response = null;
 		initKeywordQuery(); //初始化关键字查询类
-		//事件也是通过content来匹配的，所以先要把Event关键字设置到content中
-		if (Constant.EVENT.equals(request.getMsgType())) {
-			request.setContent(request.getEvent());
-		}
-		logger.info("msgType: "+ request.getMsgType()+", event: "+request.getEvent());
-		System.out.println(Constant.EVENT.equals(request.getMsgType()) && Constant.SUBSCRIBE.equals(request.getEvent()));
 		AbstractQuery query = null;
 		for (Class c : queryList) {
 			Constructor cons = c.getConstructor(MsgRequestBean.class);
 			AbstractQuery q = (AbstractQuery) cons.newInstance(request);
-			if (q.matchKeyword(request.getContent())) {
+			if (q.match()) {
 				query = q;
 				break;
 			}
@@ -75,7 +69,10 @@ public class MsgContext {
 		List<Class> unSortList = new ArrayList<Class>();
 		for (Class c : queryList) {
 			if (c.getAnnotation(KeywordQuery.class) != null) {
-				sortList.add(c);
+				KeywordQuery kq = (KeywordQuery) c.getAnnotation(KeywordQuery.class);
+				if (!kq.disable()) {
+					sortList.add(c);
+				}
 			} else {
 				unSortList.add(c);
 			}

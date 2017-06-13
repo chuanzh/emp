@@ -9,7 +9,7 @@ import cn.chuanz.service.MsgTemplate;
 import cn.chuanz.util.Constant;
 import cn.chuanz.util.FlightUtil;
 import cn.chuanz.util.anotation.KeywordQuery;
-@KeywordQuery(weight=0,value={Constant.FLIGHT_NUMBER,Constant.FLIGHT_DATE_AND_NUMBER})
+@KeywordQuery(weight=0,value={Constant.FLIGHT_NUMBER,Constant.FLIGHT_DATE_AND_NUMBER},disable=true)
 public class FlightNumberQuery extends AbstractQuery {
 	
 	private String flightNo;
@@ -44,9 +44,9 @@ public class FlightNumberQuery extends AbstractQuery {
 	}
 
 	@Override
-	protected boolean matchKeyword(String keyword) throws Exception {
+	protected boolean match() throws Exception {
 		// TODO Auto-generated method stub
-		if( FlightUtil.isFlightNumber(keyword) || FlightUtil.isFlightDateAndNumber(keyword))
+		if( FlightUtil.isFlightNumber(request.getContent()) || FlightUtil.isFlightDateAndNumber(request.getContent()))
 			return true;
 		
 		return false;

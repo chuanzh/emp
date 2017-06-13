@@ -24,9 +24,9 @@ public class FlightDepAndArrQuery extends AbstractQuery {
 	}
 
 	@Override
-	protected boolean matchKeyword(String keyword) throws Exception {
+	protected boolean match() throws Exception {
 		// TODO Auto-generated method stub
-		return FlightUtil.isDepAndArr(keyword);
+		return FlightUtil.isDepAndArr(request.getContent());
 	}
 
 }
