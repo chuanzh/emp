@@ -215,7 +215,7 @@ mqq.js会调用auth类signUrl方法，获取签名的参数，返回appId，time
   + 访问安全  
      + 通过第二步将用户信息以 key=>userinfo保存在redis中  
      + 第三步通过IP限制，防止恶意IP访问  
-  获取用户信息时序图
+  获取用户信息时序图  
    ![image](https://raw.githubusercontent.com/chuanzh/emp/master/doc/images/公众号授权第三方获取用户信息.png)   
  
   ## WEB页面反抓取
