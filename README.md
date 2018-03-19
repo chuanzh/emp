@@ -225,3 +225,4 @@ mqq.js会调用auth类signUrl方法，获取签名的参数，返回appId，time
      https://open.weixin.qq.com/connect/oauth2/authorize?appid=APPID&redirect_uri=REDIRECT_URI&response_type=code&scope=SCOPE&state=STATE#wechat_redirect
 
  
+
